@@ -87,7 +87,7 @@ pipeline {
                         script {
                             // Check if MySQL is running and accessible
                             bat """
-                                wsl docker exec custom-mysql-container mysql 127.0.0.1 -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e "SHOW DATABASES;"
+                                wsl docker exec custom-mysql-container mysql 127.0.0.1 -u ${MYSQL_USER} -p ${MYSQL_PASSWORD} -e "SHOW DATABASES;"
                             """
                         }
                     }
