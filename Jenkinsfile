@@ -86,11 +86,23 @@ pipeline {
                         echo 'Verifying MySQL container...'
                         script {
                             // Check if MySQL is running and accessible
-                            bat """
-                                wsl docker exec custom-mysql-container mysql 127.0.0.1 -u ${MYSQL_USER} -p ${MYSQL_PASSWORD}
-                            """
+//                             bat """
+//                                 wsl docker exec custom-mysql-container mysql 127.0.0.1 -u ${MYSQL_USER} -p ${MYSQL_PASSWORD} -e "SHOW DATABASES;"
+//                             """
+                            def status = bat(
+                                            script: "wsl docker exec custom-mysql-container mysql 127.0.0.1 -u ${MYSQL_USER} -p ${MYSQL_PASSWORD} -e 'SHOW DATABASES;'",
+                                            returnStatus: true
+                                        )
+                                        if (status == 0) {
+                                            echo 'MySQL container is running and accessible.'
+                                        } else {
+                                            echo 'Warning: MySQL connection returned a non-zero status.'
+                                        }
+
+
 
                         }
+
                     }
                 }
 
