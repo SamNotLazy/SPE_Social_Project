@@ -4,6 +4,13 @@ pipeline {
     environment {
         GIT_REPO_URL = 'https://github.com/SamNotLazy/SPE_Social_Project.git' // Replace with your Git repository URL
         BRANCH = 'main' // Specify the branch you want to build
+        MYSQL_ROOT_PASSWORD = 'root_password'   // Replace with a secure password
+                MYSQL_DATABASE = 'my_database'
+                MYSQL_USER = 'my_user'
+                MYSQL_PASSWORD = 'user_password'
+                MYSQL_PORT = '3306'
+                IMAGE_NAME = 'custom-mysql-image'
+                CONTAINER_NAME = 'custom-mysql-container'
     }
 
     stages {
@@ -26,6 +33,69 @@ pipeline {
                 git branch: "${BRANCH}", url: "${GIT_REPO_URL}"
             }
         }
+
+        stage('Create Dockerfile') {
+                    steps {
+                        echo 'Creating Dockerfile for MySQL...'
+                        script {
+                            // Create the Dockerfile with MySQL setup
+                            writeFile file: 'Dockerfile', text: '''
+                                FROM mysql:latest
+                                ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+                                ENV MYSQL_DATABASE=${MYSQL_DATABASE}
+                                ENV MYSQL_USER=${MYSQL_USER}
+                                ENV MYSQL_PASSWORD=${MYSQL_PASSWORD}
+                                EXPOSE 3306
+                                # Uncomment the following line if you have an init.sql file for custom setup
+                                # COPY ./init.sql /docker-entrypoint-initdb.d/
+                            '''
+                        }
+                    }
+                }
+
+                stage('Build Docker Image') {
+                    steps {
+                        echo 'Building Docker image for MySQL...'
+                        script {
+                            // Build the Docker image
+                            sh "docker build -t ${IMAGE_NAME} ."
+                        }
+                    }
+                }
+
+                stage('Run MySQL Container') {
+                    steps {
+                        echo 'Starting MySQL container...'
+                        script {
+                            // Run the Docker container with MySQL
+                            sh """
+                                docker run -d --name ${CONTAINER_NAME} \
+                                -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
+                                -e MYSQL_DATABASE=${MYSQL_DATABASE} \
+                                -e MYSQL_USER=${MYSQL_USER} \
+                                -e MYSQL_PASSWORD=${MYSQL_PASSWORD} \
+                                -p ${MYSQL_PORT}:3306 \
+                                ${IMAGE_NAME}
+                            """
+                        }
+                    }
+                }
+
+                stage('Verify MySQL Container') {
+                    steps {
+                        echo 'Verifying MySQL container...'
+                        script {
+                            // Check if MySQL is running and accessible
+                            sh """
+                                docker exec ${CONTAINER_NAME} mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e "SHOW DATABASES;"
+                            """
+                        }
+                    }
+                }
+            }
+
+
+
 
         stage('Build') {
             steps {
