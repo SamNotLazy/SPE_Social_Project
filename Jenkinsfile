@@ -58,7 +58,7 @@ pipeline {
                         echo 'Building Docker image for MySQL...'
                         script {
                             // Build the Docker image
-                            sh "docker build -t ${IMAGE_NAME} ."
+                            bat "docker build -t ${IMAGE_NAME} ."
                         }
                     }
                 }
@@ -68,7 +68,7 @@ pipeline {
                         echo 'Starting MySQL container...'
                         script {
                             // Run the Docker container with MySQL
-                            sh """
+                            bat """
                                 docker run -d --name ${CONTAINER_NAME} \
                                 -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
                                 -e MYSQL_DATABASE=${MYSQL_DATABASE} \
@@ -86,7 +86,7 @@ pipeline {
                         echo 'Verifying MySQL container...'
                         script {
                             // Check if MySQL is running and accessible
-                            sh """
+                            bat """
                                 docker exec ${CONTAINER_NAME} mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e "SHOW DATABASES;"
                             """
                         }
