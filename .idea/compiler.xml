@@ -9,5 +9,8 @@
         <module name="SPE_Social_Project" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="SPE_Social_Project" target="18" />
+    </bytecodeTargetLevel>
   </component>
 </project>
