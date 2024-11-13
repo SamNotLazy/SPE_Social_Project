@@ -87,8 +87,9 @@ pipeline {
                         script {
                             // Check if MySQL is running and accessible
                             bat """
-                                wsl docker exec custom-mysql-container mysql 127.0.0.1 -u ${MYSQL_USER} -p ${MYSQL_PASSWORD} -e "SHOW DATABASES;"
+                                wsl docker exec custom-mysql-container mysql 127.0.0.1 -u ${MYSQL_USER} -p ${MYSQL_PASSWORD}
                             """
+
                         }
                     }
                 }
@@ -126,8 +127,8 @@ pipeline {
         always {
             // Actions to run at the end of the pipeline, regardless of success/failure
             echo 'Pipeline finished.'
-            bat "docker stop ${IMAGE_NAME} "
-            bat "docker rm ${IMAGE_NAME} "
+            bat "docker stop ${CONTAINER_NAME} "
+            bat "docker rm ${CONTAINER_NAME} "
         }
         success {
             echo 'Pipeline succeeded.'
