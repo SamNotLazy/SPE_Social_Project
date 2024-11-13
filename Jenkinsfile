@@ -126,6 +126,8 @@ pipeline {
         always {
             // Actions to run at the end of the pipeline, regardless of success/failure
             echo 'Pipeline finished.'
+            bat "docker stop ${IMAGE_NAME} ."
+            bat "docker rm ${IMAGE_NAME} ."
         }
         success {
             echo 'Pipeline succeeded.'
