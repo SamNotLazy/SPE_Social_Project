@@ -143,8 +143,8 @@ pipeline {
         }
         success {
             echo 'Pipeline succeeded.'
-            bat "docker stop ${CONTAINER_NAME} "
-            bat "docker rm ${CONTAINER_NAME} "
+//             bat "docker stop ${CONTAINER_NAME} "
+//             bat "docker rm ${CONTAINER_NAME} "
         }
         failure {
             echo 'Pipeline failed.'
