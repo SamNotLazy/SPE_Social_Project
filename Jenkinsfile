@@ -34,24 +34,6 @@ pipeline {
             }
         }
 
-//         stage('Create Dockerfile') {
-//                     steps {
-//                         echo 'Creating Dockerfile for MySQL...'
-//                         script {
-//                             // Create the Dockerfile with MySQL setup
-//                             writeFile file: 'Dockerfile', text: '''
-//                                 FROM mysql:latest
-//                                 ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-//                                 ENV MYSQL_DATABASE=${MYSQL_DATABASE}
-//                                 ENV MYSQL_USER=${MYSQL_USER}
-//                                 ENV MYSQL_PASSWORD=${MYSQL_PASSWORD}
-//                                 EXPOSE 3306
-//                                 # Uncomment the following line if you have an init.sql file for custom setup
-//                                 # COPY ./init.sql /docker-entrypoint-initdb.d/
-//                             '''
-//                         }
-//                     }
-//                 }
 
                 stage('Build Docker Image') {
                     steps {
