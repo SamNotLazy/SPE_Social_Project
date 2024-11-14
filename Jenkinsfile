@@ -139,12 +139,13 @@ pipeline {
         always {
             // Actions to run at the end of the pipeline, regardless of success/failure
             echo 'Pipeline finished.'
+            bat "docker stop ${CONTAINER_NAME} "
+            bat "docker rm ${CONTAINER_NAME} "
 
         }
         success {
             echo 'Pipeline succeeded.'
-//             bat "docker stop ${CONTAINER_NAME} "
-//             bat "docker rm ${CONTAINER_NAME} "
+
         }
         failure {
             echo 'Pipeline failed.'
