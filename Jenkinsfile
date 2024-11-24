@@ -70,12 +70,10 @@ pipeline {
                                                                     env.USERNAME = env.TEMP_USERNAME
                                                                     env.PASSWORD = env.TEMP_PASSWORD
                                                                 }
-                                    bat '''
-                                    docker-compose config | grep 'image:' | awk '{print $2}' | while read image; do
-                                        echo "Pushing image: $image"
-                                        docker push $image
-                                    done
-                                    '''
+                                    bat """
+                                                        docker samnotlazy/mysql:latest
+                                                        docker push samnotlazy/app:latest
+                                                        """
                                 }
             }
         }
