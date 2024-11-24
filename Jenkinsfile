@@ -34,13 +34,19 @@ pipeline {
             }
         }
 
+        stage('Maven Build') {
+                    steps {
+                        bat "mvn clean package"
+                    }
+                }
 
-                stage('Build Docker Image') {
+
+                stage('Build Docker Images') {
                     steps {
                         echo 'Building Docker image for MySQL...'
                         script {
                             // Build the Docker image
-                            bat "docker build -t ${IMAGE_NAME} ."
+                            bat "docker-compose up --build -d"
                         }
                     }
                 }
