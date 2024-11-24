@@ -71,7 +71,7 @@ pipeline {
                                                                     env.PASSWORD = env.TEMP_PASSWORD
                                                                 }
                                     bat """
-                                                        docker samnotlazy/mysql:latest
+                                                        docker push samnotlazy/mysql:latest
                                                         docker push samnotlazy/app:latest
                                                         """
                                 }
