@@ -16,9 +16,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.app  # Use the custom Dockerfile for the Java app
-    container_name: app-container
+    container_name: itestapp-container
     environment:
-      DB_HOST: itestmysql  # hostname of the MySQL service
+      DB_HOST: mysql  # hostname of the MySQL service
       DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: root_password
