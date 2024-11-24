@@ -51,23 +51,23 @@ pipeline {
                     }
                 }
 
-                stage('Run MySQL Container') {
-                    steps {
-                        echo 'Starting MySQL container...'
-                        script {
-                            // Run the Docker container with MySQL
-                            bat """
-                                docker run -d --name ${CONTAINER_NAME} \
-                                -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
-                                -e MYSQL_DATABASE=${MYSQL_DATABASE} \
-                                -e MYSQL_USER=${MYSQL_USER} \
-                                -e MYSQL_PASSWORD=${MYSQL_PASSWORD} \
-                                -p ${MYSQL_PORT}:3306 \
-                                ${IMAGE_NAME}
-                            """
-                        }
-                    }
-                }
+//                 stage('Run MySQL Container') {
+//                     steps {
+//                         echo 'Starting MySQL container...'
+//                         script {
+//                             // Run the Docker container with MySQL
+//                             bat """
+//                                 docker run -d --name ${CONTAINER_NAME} \
+//                                 -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
+//                                 -e MYSQL_DATABASE=${MYSQL_DATABASE} \
+//                                 -e MYSQL_USER=${MYSQL_USER} \
+//                                 -e MYSQL_PASSWORD=${MYSQL_PASSWORD} \
+//                                 -p ${MYSQL_PORT}:3306 \
+//                                 ${IMAGE_NAME}
+//                             """
+//                         }
+//                     }
+//                 }
 
                 stage('Verify MySQL Container') {
                     steps {
