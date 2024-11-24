@@ -29,7 +29,6 @@ pipeline {
                         git branch: "${BRANCH}", url: "${GIT_REPO_URL}"
                     }
                 }
-//
 
         stage('Maven Build') {
                     steps {
@@ -38,7 +37,7 @@ pipeline {
                 }
 
 
-                stage('Build Docker Images') {
+                stage('Docker Image testings') {
                     steps {
 
                         script {
@@ -47,43 +46,38 @@ pipeline {
                         }
                     }
                 }
-
-//
-
-                stage('Verify MySQL Container') {
-                    steps {
-                        echo 'Verifying MySQL container...'
-                        script {
-                            // Check if MySQL is running and accessible
-//                             bat """
-//                                 wsl docker exec custom-mysql-container mysql 127.0.0.1 -u ${MYSQL_USER} -p ${MYSQL_PASSWORD} -e "SHOW DATABASES;"
-//                             """
-                            def status = bat(
-                                            script: "wsl docker exec custom-mysql-container mysql 127.0.0.1 -u ${MYSQL_USER} -p ${MYSQL_PASSWORD} -e 'SHOW DATABASES;'",
-                                            returnStatus: true
-                                        )
-                                        if (status == 0) {
-                                            echo 'MySQL container is running and accessible.'
-                                        } else {
-                                            echo 'Warning: MySQL connection returned a non-zero status.'
-                                        }
-
-
-
-                        }
-
-                    }
-                }
-
-
-
-
-
-        stage('Build') {
+        stage('Verify MySQL Docker Container') {
             steps {
-                // Build commands (e.g., for a Java project you might use 'mvn clean install')
-                echo 'Building project...'
-                // sh 'your-build-command-here'
+                echo 'Verifying MySQL container...'
+                script {
+                def status = bat(script: "wsl docker exec custom-mysql-container mysql 127.0.0.1 -u ${MYSQL_USER} -p ${MYSQL_PASSWORD} -e 'SHOW DATABASES;'",
+                                 returnStatus: true)
+                                     if (status == 0) {
+                                     echo 'MySQL container is running and accessible.'
+                                     } else {
+                                     echo 'Warning: MySQL connection returned a non-zero status.'
+                                     }
+                                 }
+            }
+        }
+
+        stage('Docker Uploads') {
+            steps {
+                stage('Build and Push Docker Images') {
+                            steps {
+                                script {
+                                    withCredentials([usernamePassword(credentialsId: 'dockCred', usernameVariable: 'TEMP_USERNAME', passwordVariable: 'TEMP_PASSWORD')]) {
+                                                                    // Set these as environment variables for the entire pipeline
+                                                                    env.USERNAME = env.TEMP_USERNAME
+                                                                    env.PASSWORD = env.TEMP_PASSWORD
+                                                                }
+                                    bat '''
+                                    docker-compose config | grep 'image:' | awk '{print $2}' | while read image; do
+                                        echo "Pushing image: $image"
+                                        docker push $image
+                                    done
+                                    '''
+                                }
             }
         }
 

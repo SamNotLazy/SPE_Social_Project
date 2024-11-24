@@ -10,6 +10,7 @@ services:
       - "3306:3306"
     networks:
       - my-network
+    image: samnotlazy/mysql:latest
 
 
   app:
@@ -28,6 +29,7 @@ services:
       - "8081:8081"  # Adjust based on the Java app’s port
     networks:
       - my-network
+    image: samnotlazy/app:latest
 
 networks:
   my-network:
