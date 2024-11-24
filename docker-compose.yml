@@ -6,9 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile.mysql  # Use the custom Dockerfile for MySQL
     container_name: mysql-container
-#    environment:
-#      MYSQL_ROOT_PASSWORD: my-secret-pw
-#      MYSQL_DATABASE: my_database
     ports:
       - "3306:3306"
     networks:
@@ -21,7 +18,7 @@ services:
       dockerfile: Dockerfile.app  # Use the custom Dockerfile for the Java app
     container_name: app-container
     environment:
-      DB_HOST: mysql  # hostname of the MySQL service
+      DB_HOST: itestmysql  # hostname of the MySQL service
       DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: root_password

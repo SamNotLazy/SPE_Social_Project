@@ -10,12 +10,13 @@ pipeline {
                 MYSQL_PASSWORD = 'user_password'
                 MYSQL_PORT = '3306'
                 IMAGE_NAME = 'custom-mysql-image'
-                CONTAINER_NAME = 'custom-mysql-container'
+                SQL_CONTAINER_NAME = 'mysql-container'
+                INTEGRITY_TEST_CONTAINER_NAME='itestapp-container'
     }
 
     stages {
 
-        stage('Setup Environment') {
+        stage('Secure Fetch From Repository') {
                     steps {
                         script {
                             // Use withCredentials to securely set credentials and assign to environment variables
@@ -25,25 +26,21 @@ pipeline {
                                 env.PASSWORD = env.TEMP_PASSWORD
                             }
                         }
+                        git branch: "${BRANCH}", url: "${GIT_REPO_URL}"
                     }
                 }
-        stage('Clone Repository') {
-            steps {
-                // Checkout the code from the Git repository
-                git branch: "${BRANCH}", url: "${GIT_REPO_URL}"
-            }
-        }
+//
 
         stage('Maven Build') {
                     steps {
-                        bat "mvn clean package"
+                        bat "mvn test clean package"
                     }
                 }
 
 
                 stage('Build Docker Images') {
                     steps {
-                        echo 'Building Docker image for MySQL...'
+
                         script {
                             // Build the Docker image
                             bat "docker-compose up --build -d"
@@ -51,23 +48,7 @@ pipeline {
                     }
                 }
 
-//                 stage('Run MySQL Container') {
-//                     steps {
-//                         echo 'Starting MySQL container...'
-//                         script {
-//                             // Run the Docker container with MySQL
-//                             bat """
-//                                 docker run -d --name ${CONTAINER_NAME} \
-//                                 -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
-//                                 -e MYSQL_DATABASE=${MYSQL_DATABASE} \
-//                                 -e MYSQL_USER=${MYSQL_USER} \
-//                                 -e MYSQL_PASSWORD=${MYSQL_PASSWORD} \
-//                                 -p ${MYSQL_PORT}:3306 \
-//                                 ${IMAGE_NAME}
-//                             """
-//                         }
-//                     }
-//                 }
+//
 
                 stage('Verify MySQL Container') {
                     steps {
@@ -127,9 +108,10 @@ pipeline {
         always {
             // Actions to run at the end of the pipeline, regardless of success/failure
             echo 'Pipeline finished.'
-            bat "docker stop ${CONTAINER_NAME} "
-            bat "docker rm ${CONTAINER_NAME} "
-
+            bat "docker stop ${SQL_CONTAINER_NAME} "
+            bat "docker rm ${SQL_CONTAINER_NAME} "
+            bat "docker stop ${INTEGRITY_TEST_CONTAINER_NAME} "
+            bat "docker rm ${INTEGRITY_TEST_CONTAINER_NAME} "
         }
         success {
             echo 'Pipeline succeeded.'
