@@ -1,8 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql
-  namespace: my-app
+  name: mysql-deployment
   labels:
     app: mysql
 spec:
@@ -27,10 +26,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: mysql-service
 spec:
   ports:
     - port: 3306
       targetPort: 3306
+      protocol: TCP
+  type: NodePort
   selector:
     app: mysql

@@ -2,10 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: itestapp
-  namespace: my-app
-  labels:
-    app: itestapp
-
 spec:
   replicas: 1
   selector:
@@ -22,14 +18,14 @@ spec:
           ports:
             - containerPort: 8081
           env:
-            - name: DB_HOST
-              value: mysql
-            - name: DB_PORT
+            - name: MYSQL_HOST
+              value: "mysql-service"  # The name of the MySQL service in Kubernetes
+            - name: MYSQL_PORT
               value: "3306"
-            - name: DB_USER
-              value: root
-            - name: DB_PASSWORD
-              value: root_password
+            - name: MYSQL_USER
+              value: "root"
+            - name: MYSQL_PASSWORD
+              value: "root_password"  # The password you set for MySQL
 ---
 apiVersion: v1
 kind: Service
