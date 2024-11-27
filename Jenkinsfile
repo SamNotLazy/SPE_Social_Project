@@ -90,7 +90,7 @@ pipeline {
                     kubectl apply -f mysql-deployment.yaml
                     kubectl apply -f app-deployment.yaml
                     kubectl apply -f test_pod_shell.yaml
-                    kubectl port-forward svc/mysql-service 3306:3306
+
                 """
             }
         }
