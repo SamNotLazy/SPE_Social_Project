@@ -89,7 +89,7 @@ pipeline {
                 bat """
                     kubectl apply -f mysql-deployment.yaml
                     kubectl apply -f app-deployment.yaml
-                    kubectl apply -f test_pod_shell.yaml
+                    kubectl apply -f test-pod-shell.yaml
 
                 """
             }

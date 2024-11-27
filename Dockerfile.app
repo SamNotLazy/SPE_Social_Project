@@ -8,6 +8,6 @@ COPY mysql-connector-j-8.0.33.jar mysql-connector-j-8.0.33.jar
 
 # Run the application
 
- ENTRYPOINT ["sh", "-c", "echo 'Waiting for 30 seconds...'; sleep 30; java -cp app.jar:mysql-connector-j-8.0.33.jar JDBCTest"]
+ ENTRYPOINT ["sh", "-c", "echo 'Waiting for 5 seconds...'; sleep 5; java -cp app.jar:mysql-connector-j-8.0.33.jar JDBCTest"]
 
 EXPOSE 8081

@@ -5,7 +5,7 @@ import java.sql.Statement;
 
 public class JDBCTest {
     public static void main(String[] args) throws ClassNotFoundException {
-        String jdbcUrl = "jdbc:mysql://mysql-service:3306/my_database";
+        String jdbcUrl = "jdbc:mysql://mysql-service:3306/stock_exchange";
         String username = "root";
         String password = "root_password";
         Class.forName("com.mysql.cj.jdbc.Driver");
