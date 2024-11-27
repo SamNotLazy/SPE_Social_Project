@@ -97,7 +97,7 @@ pipeline {
         stage('Mysql Connectivity Check') {
                     steps {
                         echo 'Testing connection to mysql'
-                        bat ""
+                        bat "mvn test"
                     }
                 }
     }

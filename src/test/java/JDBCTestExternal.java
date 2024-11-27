@@ -1,10 +1,13 @@
+import org.junit.jupiter.api.Test;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class JDBCTestExternal {
-    public static void main(String[] args) throws ClassNotFoundException {
+    @Test
+    public void test() throws ClassNotFoundException {
         String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/my_database";
         String username = "root";
         String password = "root_password";
