@@ -4,7 +4,7 @@ services:
   mysql:
     build:
       context: .
-      dockerfile: Dockerfile.mysql  # Use the custom Dockerfile for MySQL
+      dockerfile: Dockerfile.mysql
     container_name: mysql-container
     ports:
       - "3306:3306"
@@ -16,17 +16,17 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile.app  # Use the custom Dockerfile for the Java app
+      dockerfile: Dockerfile.app
     container_name: itestapp-container
     environment:
-      DB_HOST: mysql  # hostname of the MySQL service
+      DB_HOST: mysql
       DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: root_password
     depends_on:
       - mysql
     ports:
-      - "8081:8081"  # Adjust based on the Java app’s port
+      - "8081:8081"
     networks:
       - my-network
     image: samnotlazy/app:latest

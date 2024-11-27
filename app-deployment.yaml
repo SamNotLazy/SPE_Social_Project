@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: itestapp
+  labels:
+    app: itestapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: itestapp
+  template:
+    metadata:
+      labels:
+        app: itestapp
+    spec:
+      containers:
+        - name: itestapp
+          image: samnotlazy/app:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: DB_HOST
+              value: mysql
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_USER
+              value: root
+            - name: DB_PASSWORD
+              value: root_password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: itestapp
+spec:
+  ports:
+    - port: 8081
+      targetPort: 8081
+  selector:
+    app: itestapp
+  type: NodePort
